@@ -1,5 +1,5 @@
 resourcegroup="myResourceGroupCLI"
-az group create --name=resourcegroup --location westus
+az group create --name $resourcegroup --location westeu
 
 location="westus3"
 vmname="myVM"
