@@ -1,4 +1,6 @@
 resourcegroup="myResourceGroupCLI"
+az group create --name=resourcegroup --location westus
+
 location="westus3"
 vmname="myVM"
 username="azureuser"
