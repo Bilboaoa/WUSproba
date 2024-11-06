@@ -8,7 +8,7 @@ VNET_NAME="${PREFIX}-vnet"
 VNET_SUBNET_NAME="${PREFIX}-subnet"
 VM_SIZE="Standard_B1ms"
 
-VM_USER="snoopdogg"
+VM_USER="azuser"
 VM_PASSWORD="Snoopdogg_420"
 VM_IMAGE="UbuntuLTS"
 
