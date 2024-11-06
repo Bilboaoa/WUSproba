@@ -50,7 +50,7 @@ az network nsg rule create \
 --access allow \
 --protocol Tcp \
 --direction Inbound \
---destination-port-range 4200 22 \
+--destination-port-range 8080 22 \
 --source-address-prefix "*" \
 --source-port-range "*" \
 --destination-address-prefix "*" \
@@ -149,7 +149,7 @@ echo >&2 "<> OPENING VM PORTS <>"
 az vm open-port \
 --resource-group "$RESOURCE_GROUP" \
 --name "$VM_FE" \
---port 22,4200 \
+--port 22,8080 \
 
 az vm open-port \
 --resource-group "$RESOURCE_GROUP" \
@@ -185,5 +185,5 @@ az vm run-command invoke \
 --no-wait \
 
 echo >&2 "DEPLOYMENT COMPLETE"
-echo >&2 "WEBSITE URL: $VM_FE_PUBLIC_IP:4200"
+echo >&2 "WEBSITE URL: $VM_FE_PUBLIC_IP:8080"
 echo >&2 "SSH CONNECT: \`$ ssh $VM_USER@$VM_FE_PUBLIC_IP\` WITH PASSWORD: $VM_PASSWORD"
