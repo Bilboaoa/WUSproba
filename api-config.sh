@@ -2,9 +2,9 @@
 
 DB_ADDRESS="$1"
 
-
-sudo apt update -y
-sudo apt install -y openjdk-11-jdk
+sudo apt-get update
+sudo apt-get upgrade -y
+sudo apt-get install openjdk-17-jdk -y
 
 cd /home/azuser
 mkdir app
