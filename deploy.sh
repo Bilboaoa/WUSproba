@@ -10,7 +10,7 @@ VM_SIZE="Standard_B1ms"
 
 VM_USER="azuser"
 VM_PASSWORD="Snoopdogg_420"
-VM_IMAGE="UbuntuLTS"
+VM_IMAGE="Ubuntu2204"
 
 VM_FE="${PREFIX}-fe-vm"
 VM_FE_PUBLIC_IP_NAME="${VM_FE}-public-ip"
