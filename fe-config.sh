@@ -21,6 +21,7 @@ cd spring-petclinic-angular/
 sed -i "s/localhost/$FE_URL/g" src/environments/environment.ts src/environments/environment.prod.ts
 sed -i "s/9966/8080/g" src/environments/environment.ts src/environments/environment.prod.ts
 
+sudo apt-get remove --purge nodejs
 
 sudo -s
 
@@ -38,7 +39,7 @@ echo Log: | ng analytics off
 
 
 # ng build --prod --base-href=/petclinic/ --deploy-url=/petclinic/
-ng build --prod --base-href=/petclinic/ --deploy-url=/petclinic/
+ng build --configuration production --base-href=/petclinic/ --deploy-url=/petclinic/
 
 # sudo npm install @angular/cli@11.2.11 --save-dev #install locally 
 # sudo npx ng build --prod --base-href=/petclinic/ --deploy-url=/petclinic/ # build locally
