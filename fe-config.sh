@@ -4,6 +4,12 @@
 API_URL="$1"
 FE_URL="$2"
 
+
+sudo apt-get update
+sudo apt-get upgrade -y
+sudo apt autoremove -y
+sudo apt-get install curl -y
+sudo apt-get install npm -y
 sudo apt update -y
 sudo apt install nginx -y
 
@@ -22,14 +28,15 @@ cd spring-petclinic-angular/
 sed -i "s/localhost/$FE_URL/g" src/environments/environment.ts src/environments/environment.prod.ts
 sed -i "s/9966/8080/g" src/environments/environment.ts src/environments/environment.prod.ts
 
-echo Log: | npm install -g @angular/cli@11.2.11
+echo Log: | npm install -g @angular/cli@latest
 echo Log: | npm install
 echo Log: | ng analytics off
 
 ng build --prod --base-href=/petclinic/ --deploy-url=/petclinic/
 
 sudo mkdir /usr/share/nginx/html/petclinic
-sudo cp -r dist/ /usr/share/nginx/html/petclinic
+
+sudo cp -r dist/spring-petclinic-angular/* /usr/share/nginx/html/petclinic
 
 cat > petclinic.conf << EOL
 server {
@@ -38,7 +45,7 @@ server {
     index /petclinic/index.html;
 
 	location /petclinic/ {
-        alias /usr/share/nginx/html/petclinic/dist/;
+        alias /usr/share/nginx/html/petclinic;
         try_files \$uri\$args \$uri\$args/ /petclinic/index.html;
     }
 
