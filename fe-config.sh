@@ -49,8 +49,7 @@ sudo mkdir /usr/share/nginx/html/petclinic
 
 sudo cp -r dist/ /usr/share/nginx/html/petclinic
 
-cat > petclinic.conf << EOL
-  GNU nano 6.2                                                      petclinic.conf                                                               
+cat > petclinic.conf << EOL                                                               
 server {
     listen 8080 default_server;
     root /usr/share/nginx/html/petclinic/dist;
