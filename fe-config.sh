@@ -50,21 +50,25 @@ sudo mkdir /usr/share/nginx/html/petclinic
 sudo cp -r dist/ /usr/share/nginx/html/petclinic
 
 cat > petclinic.conf << EOL
+  GNU nano 6.2                                                      petclinic.conf                                                               
 server {
-	listen       8080 default_server;
-    root         /usr/share/nginx/html;
-    index /petclinic/index.html;
+    listen 8080 default_server;
+    root /usr/share/nginx/html/petclinic/dist;
+    index index.html;
 
-	location /petclinic/ {
-        alias /usr/share/nginx/html/petclinic;
-        try_files \$uri\$args \$uri\$args/ /petclinic/index.html;
+    location /petclinic/ {
+        alias /usr/share/nginx/html/petclinic/dist/;
+        try_files $uri $uri/ /petclinic/index.html;
     }
 
+    # API proxy to backend server
     location /petclinic/api/ {
         proxy_pass http://${API_URL}:9966;
         include proxy_params;
     }
 }
+
+
 EOL
 
 sudo mv petclinic.conf /etc/nginx/conf.d/petclinic.conf
