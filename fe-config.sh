@@ -57,12 +57,12 @@ server {
 
     location /petclinic/ {
         alias /usr/share/nginx/html/petclinic/dist/;
-        try_files $uri $uri/ /petclinic/index.html;
+        try_files \$uri \$uri/ /petclinic/index.html;
     }
 
     # API proxy to backend server
     location /petclinic/api/ {
-        proxy_pass http://10.0.2.101:9966;
+        proxy_pass http://${API_URL}:9966;
         include proxy_params;
     }
 }
