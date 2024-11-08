@@ -45,11 +45,11 @@ ng build --configuration production --base-href=/petclinic/ --deploy-url=/petcli
 # sudo npx ng build --prod --base-href=/petclinic/ --deploy-url=/petclinic/ # build locally
 
 
-sudo mkdir /usr/share/nginx/html/petclinic
+mkdir /usr/share/nginx/html/petclinic
 
-sudo cp -r dist/ /usr/share/nginx/html/petclinic
+cp -r dist/ /usr/share/nginx/html/petclinic
 
-cat > petclinic.conf << EOL                                                               
+sudo bash -c 'cat > /etc/nginx/conf.d/petclinic.conf' << EOL
 server {
     listen 8080 default_server;
     root /usr/share/nginx/html/petclinic/dist;
@@ -62,16 +62,13 @@ server {
 
     # API proxy to backend server
     location /petclinic/api/ {
-        proxy_pass http://${API_URL}:9966;
+        proxy_pass http://10.0.2.101:9966;
         include proxy_params;
     }
 }
 
-
 EOL
-
-sudo mv petclinic.conf /etc/nginx/conf.d/petclinic.conf
 
 sudo rm /etc/nginx/sites-enabled/default
 
-sudo nginx -s reload
+sudo systemctl restart nginx
