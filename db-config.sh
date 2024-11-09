@@ -24,9 +24,11 @@ FLUSH PRIVILEGES;
 EOL
 
 # Initialize database
-sudo mysql -e "CREATE USER 'pc'@'%' IDENTIFIED BY 'petclinic'; GRANT ALL PRIVILEGES ON *.* TO 'pc'@'%' WITH GRANT OPTION;"
-wget "$DB_SCRIPTS_URI/schema.sql" -O - | sudo mysql -f
-wget "$DB_SCRIPTS_URI/data.sql" -O - | sudo mysql petclinic -f
+sudo mysql < in.sql
+wget "$DB_SCRIPTS_URI/schema.sql" -O schema.sql
+sudo mysql petclinic < schema.sql
+wget "$DB_SCRIPTS_URI/data.sql" -O data.sql
+sudo mysql petclinic < data.sql
 
 # Restart mysql server
 sudo service mysql restart
