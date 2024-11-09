@@ -9,7 +9,7 @@ VNET_SUBNET_NAME="${PREFIX}-subnet"
 VM_SIZE="Standard_B1ms"
 
 VM_USER="azuser"
-VM_PASSWORD="Snoopdogg_420"
+VM_PASSWORD="Pet12345678!"
 VM_IMAGE="Ubuntu2204"
 
 VM_FE="${PREFIX}-fe-vm"
