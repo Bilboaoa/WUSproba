@@ -17,13 +17,13 @@ VM_FE_PUBLIC_IP_NAME="${VM_FE}-public-ip"
 VM_FE_PRIVATE_IP="10.0.1.100"
 
 VM_BE="${PREFIX}-be-vm"
-VM_BE_PRIVATE_IP="10.0.2.101"
+VM_BE_PRIVATE_IP="10.0.2.100"
 
 VM_DB="${PREFIX}-db-vm"
-VM_DB_PRIVATE_IP="10.0.2.100"
+VM_DB_PRIVATE_IP="10.0.3.100"
 
 VM_DB_SLAVE="${PREFIX}-db-slave-vm"
-VM_DB_SLAVE_PRIVATE_ID="10.0.2.103"
+VM_DB_SLAVE_PRIVATE_ID="10.0.3.101"
 
 VM_FE_INIT_CMD_PATH="./fe-config.sh"
 VM_BE_INIT_CMD_PATH="./api-config.sh"
@@ -91,6 +91,13 @@ az network vnet subnet create \
 --network-security-group be-nsg \
 --address-prefixes "10.0.2.0/24"
 
+az network vnet subnet create \
+--resource-group "$RESOURCE_GROUP" \
+--vnet-name "$VNET_NAME" \
+--name "${VNET_SUBNET_NAME}-db" \
+--network-security-group be-nsg \
+--address-prefixes "10.0.3.0/24"
+
 echo >&2 "<> CREATING VIRTUAL MACHINES <>"
 
 az vm create \
@@ -127,7 +134,7 @@ az vm create \
 --admin-username "$VM_USER" \
 --admin-password "$VM_PASSWORD" \
 --image "$VM_IMAGE" \
---subnet "$VNET_SUBNET_NAME-be" \
+--subnet "${VNET_SUBNET_NAME}-db" \
 --private-ip-address "$VM_DB_PRIVATE_IP" \
 --public-ip-sku Standard \
 --vnet-name "$VNET_NAME" \
@@ -140,9 +147,9 @@ az vm create \
 --admin-username "$VM_USER" \
 --admin-password "$VM_PASSWORD" \
 --image "$VM_IMAGE" \
---subnet "$VNET_SUBNET_NAME-be" \
+--subnet "${VNET_SUBNET_NAME}-db" \
 --private-ip-address "$VM_DB_SLAVE_PRIVATE_ID" \
---public-ip-sku Standard \
+--public-ip-address "" \
 --vnet-name "$VNET_NAME" \
 --no-wait \
 
