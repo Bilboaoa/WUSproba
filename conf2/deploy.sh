@@ -22,9 +22,13 @@ VM_BE_PRIVATE_IP="10.0.2.101"
 VM_DB="${PREFIX}-db-vm"
 VM_DB_PRIVATE_IP="10.0.2.100"
 
+VM_DB_SLAVE="${PREFIX}-db-slave-vm"
+VM_DB_SLAVE_PRIVATE_ID="10.0.2.103"
+
 VM_FE_INIT_CMD_PATH="./fe-config.sh"
 VM_BE_INIT_CMD_PATH="./api-config.sh"
 VM_DB_INIT_CMD_PATH="./db-config.sh"
+VM_DB_SLAVE_INIT_PATH="./db-slave.sh"
 
 echo >&2 "<> CREATING THE $RESOURCE_GROUP RESOURCE GROUP <>"
 
@@ -129,6 +133,19 @@ az vm create \
 --vnet-name "$VNET_NAME" \
 --no-wait \
 
+az vm create \
+--resource-group "$RESOURCE_GROUP" \
+--name "$VM_DB_SLAVE" \
+--size "$VM_SIZE" \
+--admin-username "$VM_USER" \
+--admin-password "$VM_PASSWORD" \
+--image "$VM_IMAGE" \
+--subnet "$VNET_SUBNET_NAME-be" \
+--private-ip-address "$VM_DB_SLAVE_PRIVATE_ID" \
+--public-ip-sku Standard \
+--vnet-name "$VNET_NAME" \
+--no-wait \
+
 VM_IDS="$(az vm list -g "$RESOURCE_GROUP" --query "[].id" -o tsv)"
 
 echo >&2 "<> WAITING FOR VMS... <>"
@@ -161,6 +178,11 @@ az vm open-port \
 --name "$VM_DB" \
 --port 22,3306  \
 
+az vm open-port \
+--resource-group "$RESOURCE_GROUP" \
+--name "$VM_DB_SLAVE" \
+--port 22,3306  \
+
 az vm run-command invoke \
 --command-id "RunShellScript" \
 --resource-group "$RESOURCE_GROUP" \
@@ -182,6 +204,14 @@ az vm run-command invoke \
 --resource-group "$RESOURCE_GROUP" \
 --name "$VM_DB" \
 --scripts @"$VM_DB_INIT_CMD_PATH" \
+--no-wait \
+
+az vm run-command invoke \
+--command-id "RunShellScript" \
+--resource-group "$RESOURCE_GROUP" \
+--name "$VM_DB_SLAVE" \
+--scripts @"$VM_DB_SLAVE_INIT_PATH" \
+--parameters $VM_DB_PRIVATE_IP 3306
 --no-wait \
 
 echo >&2 "DEPLOYMENT COMPLETE"
