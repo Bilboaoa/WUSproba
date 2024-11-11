@@ -3,7 +3,7 @@ MASTER_IP=$1
 MASTER_PORT=$2
 
 DB_SCRIPTS_URI="https://raw.githubusercontent.com/spring-petclinic/spring-petclinic-rest/master/src/main/resources/db/mysql"
-MY_SQL_CONFIG="/etc/mysql/mysql.conf.d/mysqld.cnf"
+MYSQL_CONFIG="/etc/mysql/mysql.conf.d/mysqld.cnf"
 
 # Get packages
 sudo apt update -y
@@ -28,9 +28,9 @@ ALTER USER 'replicate'@'%' IDENTIFIED WITH 'mysql_native_password' BY 'slave_pas
 FLUSH PRIVILEGES;
 EOL
 
-echo "server-id = 1" >>MY_SQL_CONFIG 
-echo "general_log = 1" >>MY_SQL_CONFIG 
-echo "general_log_file = /var/log/mysql/mysql.log" >>MY_SQL_CONFIG
+echo 'server-id = 2' | sudo tee -a $MYSQL_CONFIG
+echo 'general_log = 1' | sudo tee -a $MYSQL_CONFIG
+echo 'general_log_file = /var/log/mysql/mysql.log' | sudo tee -a $MYSQL_CONFIG
 
 
 # Initialize database
