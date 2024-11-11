@@ -30,13 +30,13 @@ VM_BE_INIT_CMD_PATH="./api-config.sh"
 VM_DB_INIT_CMD_PATH="./db-config.sh"
 VM_DB_SLAVE_INIT_PATH="./db-slave.sh"
 
-echo >&2 "<> CREATING THE $RESOURCE_GROUP RESOURCE GROUP <>"
+echo >&2 "<<<<<<<<<<<< CREATING THE $RESOURCE_GROUP RESOURCE GROUP >>>>>>>>>>>>>"
 
 az group create \
 --location "$LOCATION" \
 --resource-group "$RESOURCE_GROUP"
 
-echo >&2 "<> CREATING THE NETWORK <>"
+echo >&2 "<<<<<<<<<<<< CREATING THE NETWORK >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
 
 az network vnet create \
 --resource-group "$RESOURCE_GROUP" \
@@ -98,7 +98,7 @@ az network vnet subnet create \
 --network-security-group be-nsg \
 --address-prefixes "10.0.3.0/24"
 
-echo >&2 "<> CREATING VIRTUAL MACHINES <>"
+echo >&2 "<<<<<<<<<<<<<<<<< CREATING VIRTUAL MACHINES >>>>>>>>>>>>>>>"
 
 az vm create \
 --resource-group "$RESOURCE_GROUP" \
@@ -168,7 +168,7 @@ VM_FE_PUBLIC_IP=$(
 	--output tsv \
 )
 
-echo >&2 "<> OPENING VM PORTS <>"
+echo >&2 "<<<<<<<<<<<<<<<<< OPENING VM PORTS >>>>>>>>>>>>>>>>>>>>>"
 
 az vm open-port \
 --resource-group "$RESOURCE_GROUP" \
@@ -189,6 +189,8 @@ az vm open-port \
 --resource-group "$RESOURCE_GROUP" \
 --name "$VM_DB_SLAVE" \
 --port 22,3306  \
+
+echo >&2 "<<<<<<<<<<<<<<<<< INVOKING COMMANDS >>>>>>>>>>>>>>>>>>>>>"
 
 az vm run-command invoke \
 --command-id "RunShellScript" \

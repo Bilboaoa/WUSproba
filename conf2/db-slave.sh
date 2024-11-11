@@ -23,8 +23,6 @@ CREATE USER IF NOT EXISTS 'petclinic'@'%' IDENTIFIED BY 'petclinic';
 
 GRANT ALL PRIVILEGES ON petclinic.* TO 'petclinic'@'%';
 
-ALTER USER 'replicate'@'%' IDENTIFIED WITH 'mysql_native_password' BY 'slave_pass';
-
 FLUSH PRIVILEGES;
 EOL
 
