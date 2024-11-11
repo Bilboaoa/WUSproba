@@ -1,6 +1,7 @@
 #!/bin/sh
 
 DB_SCRIPTS_URI="https://raw.githubusercontent.com/spring-petclinic/spring-petclinic-rest/master/src/main/resources/db/mysql"
+MY_SQL_CONFIG="/etc/mysql/mysql.conf.d/mysqld.cnf"
 
 # Get packages
 sudo apt update -y
@@ -21,10 +22,17 @@ CREATE USER IF NOT EXISTS 'replicate'@'%' IDENTIFIED BY 'slave_pass';
 
 GRANT ALL PRIVILEGES ON petclinic.* TO 'petclinic'@'%';
 GRANT REPLICATION SLAVE ON *.* TO 'replicate'@'%';
+ALTER USER 'replicate'@'%' IDENTIFIED WITH 'mysql_native_password' BY 'slave_pass';
 
 
 FLUSH PRIVILEGES;
 EOL
+
+echo "server-id = 1" >>MY_SQL_CONFIG
+echo "log-bin = mysql-bin" >>MY_SQL_CONFIG
+
+echo "general_log = 1" >>MY_SQL_CONFIG
+echo "general_log_file = /var/log/mysql/mysql.log" >>MY_SQL_CONFIG
 
 # Initialize database
 sudo mysql < in.sql
