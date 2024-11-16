@@ -230,7 +230,7 @@ az vm run-command invoke \
 --resource-group "$RESOURCE_GROUP" \
 --name "$VM_DB" \
 --scripts @"$VM_BE_INIT_CMD_PATH" \
---parameters $VM_DB_PRIVATE_IP \
+--parameters $VM_DB_SLAVE_PRIVATE_IP \
 --no-wait \
 
 az vm run-command invoke \
