@@ -23,9 +23,9 @@ VM_DB="${PREFIX}-db-vm"
 VM_DB_PRIVATE_IP="10.0.3.100"
 
 VM_DB_SLAVE="${PREFIX}-db-slave-vm"
-VM_DB_SLAVE_PRIVATE_ID="10.0.3.101"
+VM_DB_SLAVE_PRIVATE_IP="10.0.3.101"
 
-NGINX_PRIVATE_IP=$VM_DB_SLAVE_PRIVATE_ID
+NGINX_PRIVATE_IP=$VM_DB_SLAVE_PRIVATE_IP
 
 VM_FE_INIT_CMD_PATH="./fe-config.sh"
 VM_BE_INIT_CMD_PATH="./api-config.sh"
@@ -153,7 +153,7 @@ az vm create \
 --admin-password "$VM_PASSWORD" \
 --image "$VM_IMAGE" \
 --subnet "${VNET_SUBNET_NAME}-db" \
---private-ip-address "$VM_DB_SLAVE_PRIVATE_ID" \
+--private-ip-address "$VM_DB_SLAVE_PRIVATE_IP" \
 --public-ip-address "" \
 --vnet-name "$VNET_NAME" \
 --no-wait \
