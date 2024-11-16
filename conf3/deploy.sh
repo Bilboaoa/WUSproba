@@ -200,7 +200,7 @@ az vm run-command invoke \
 --resource-group "$RESOURCE_GROUP" \
 --name "$VM_FE" \
 --scripts @"$VM_FE_INIT_CMD_PATH" \
---parameters $NGINX_PRIVATE_IP $VM_FE_PUBLIC_IP \
+--parameters $NGINX_PRIVATE_IP $VM_FE_PUBLIC_IP 8081 \
 --no-wait \
 
 az vm run-command invoke \
@@ -239,7 +239,7 @@ az vm run-command invoke \
 --resource-group "$RESOURCE_GROUP" \
 --name "$VM_DB_SLAVE" \
 --scripts @"$VM_NG_INIT_CMD_PATH" \
---parameters $VM_DB_PRIVATE_IP \
+--parameters 8081 $VM_BE_PRIVATE_IP 9966 $VM_DB_PRIVATE_IP 9966 \
 --no-wait \
 
 echo >&2 "DEPLOYMENT COMPLETE"
