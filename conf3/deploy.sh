@@ -208,13 +208,6 @@ az vm run-command invoke \
 az vm run-command invoke \
 --command-id "RunShellScript" \
 --resource-group "$RESOURCE_GROUP" \
---name "$VM_BE" \
---scripts @"$VM_BE_INIT_CMD_PATH" \
---parameters $VM_DB_PRIVATE_IP 
-
-az vm run-command invoke \
---command-id "RunShellScript" \
---resource-group "$RESOURCE_GROUP" \
 --name "$VM_DB" \
 --scripts @"$VM_DB_INIT_CMD_PATH" \
 
@@ -224,6 +217,13 @@ az vm run-command invoke \
 --name "$VM_DB_SLAVE" \
 --scripts @"$VM_DB_SLAVE_INIT_PATH" \
 --parameters $VM_DB_PRIVATE_IP 3306
+
+az vm run-command invoke \
+--command-id "RunShellScript" \
+--resource-group "$RESOURCE_GROUP" \
+--name "$VM_BE" \
+--scripts @"$VM_BE_INIT_CMD_PATH" \
+--parameters $VM_DB_PRIVATE_IP
 
 az vm run-command invoke \
 --command-id "RunShellScript" \
