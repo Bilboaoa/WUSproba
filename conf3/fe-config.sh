@@ -49,7 +49,7 @@ mkdir /usr/share/nginx/html/petclinic
 
 cp -r dist/ /usr/share/nginx/html/petclinic
 
-sudo bash -c 'cat > /etc/nginx/conf.d/petclinic.conf' << EOL
+cat > /etc/nginx/conf.d/petclinic.conf << EOL
 server {
     listen 8080 default_server;
     root /usr/share/nginx/html/petclinic/dist;
@@ -62,12 +62,12 @@ server {
 
     # API proxy to backend server
     location /petclinic/api/ {
-        proxy_pass http://${API_URL}:${BE_PORT};
+        proxy_pass http://$API_URL:$BE_PORT;
         include proxy_params;
     }
 }
 
 EOL
 
-sudo rm /etc/nginx/sites-enabled/defaul
+sudo rm /etc/nginx/sites-enabled/default
 sudo systemctl restart nginx

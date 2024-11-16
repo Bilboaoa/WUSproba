@@ -25,13 +25,15 @@ VM_DB_PRIVATE_IP="10.0.3.100"
 VM_DB_SLAVE="${PREFIX}-db-slave-vm"
 VM_DB_SLAVE_PRIVATE_ID="10.0.3.101"
 
-NGINX_PRIVATE_IP=$VM_SLAVE_PRIVATE_ID
+NGINX_PRIVATE_IP=$VM_DB_SLAVE_PRIVATE_ID
 
 VM_FE_INIT_CMD_PATH="./fe-config.sh"
 VM_BE_INIT_CMD_PATH="./api-config.sh"
 VM_DB_INIT_CMD_PATH="./db-config.sh"
 VM_DB_SLAVE_INIT_PATH="./db-slave.sh"
 VM_NG_INIT_CMD_PATH="./nginx.sh"
+
+echo >&2 "${NGINX_PRIVATE_IP}"
 
 echo >&2 "<<<<<<<<<<<< CREATING THE $RESOURCE_GROUP RESOURCE GROUP >>>>>>>>>>>>>"
 
@@ -208,15 +210,13 @@ az vm run-command invoke \
 --resource-group "$RESOURCE_GROUP" \
 --name "$VM_BE" \
 --scripts @"$VM_BE_INIT_CMD_PATH" \
---parameters $VM_DB_PRIVATE_IP \
---no-wait \
+--parameters $VM_DB_PRIVATE_IP 
 
 az vm run-command invoke \
 --command-id "RunShellScript" \
 --resource-group "$RESOURCE_GROUP" \
 --name "$VM_DB" \
 --scripts @"$VM_DB_INIT_CMD_PATH" \
---no-wait \
 
 az vm run-command invoke \
 --command-id "RunShellScript" \
@@ -224,7 +224,6 @@ az vm run-command invoke \
 --name "$VM_DB_SLAVE" \
 --scripts @"$VM_DB_SLAVE_INIT_PATH" \
 --parameters $VM_DB_PRIVATE_IP 3306
---no-wait \
 
 az vm run-command invoke \
 --command-id "RunShellScript" \
@@ -239,8 +238,7 @@ az vm run-command invoke \
 --resource-group "$RESOURCE_GROUP" \
 --name "$VM_DB_SLAVE" \
 --scripts @"$VM_NG_INIT_CMD_PATH" \
---parameters 8081 $VM_BE_PRIVATE_IP 9966 $VM_DB_PRIVATE_IP 9966 \
---no-wait \
+--parameters 8081 $VM_BE_PRIVATE_IP 9966 $VM_DB_PRIVATE_IP 9966 
 
 echo >&2 "DEPLOYMENT COMPLETE"
 echo >&2 "WEBSITE URL: $VM_FE_PUBLIC_IP:8080"
