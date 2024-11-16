@@ -3,7 +3,7 @@
 
 API_URL="$1"
 FE_URL="$2"
-
+BE_PORT="$3"
 
 sudo apt-get update
 sudo apt-get upgrade -y
@@ -19,7 +19,7 @@ git clone https://github.com/spring-petclinic/spring-petclinic-angular.git
 
 cd spring-petclinic-angular/
 sed -i "s/localhost/$FE_URL/g" src/environments/environment.ts src/environments/environment.prod.ts
-sed -i "s/9966/8080/g" src/environments/environment.ts src/environments/environment.prod.ts
+sed -i "s/9966/$BE_PORT/g" src/environments/environment.ts src/environments/environment.prod.ts
 
 sudo apt-get remove --purge nodejs
 

@@ -25,6 +25,8 @@ VM_DB_PRIVATE_IP="10.0.3.100"
 VM_DB_SLAVE="${PREFIX}-db-slave-vm"
 VM_DB_SLAVE_PRIVATE_ID="10.0.3.101"
 
+NGINX_PRIVATE_IP = $VM_SLAVE_PRIVATE_ID
+
 VM_FE_INIT_CMD_PATH="./fe-config.sh"
 VM_BE_INIT_CMD_PATH="./api-config.sh"
 VM_DB_INIT_CMD_PATH="./db-config.sh"
@@ -72,7 +74,7 @@ az network nsg rule create \
 --access allow \
 --protocol Tcp \
 --direction Inbound \
---destination-port-range 9966 3306 22 \
+--destination-port-range 8081 9966 3306 22 \
 --source-address-prefix "*" \
 --source-port-range "*" \
 --destination-address-prefix "*" \
@@ -184,12 +186,12 @@ az vm open-port \
 az vm open-port \
 --resource-group "$RESOURCE_GROUP" \
 --name "$VM_DB" \
---port 22,3306  \
+--port 22,3306,9966  \
 
 az vm open-port \
 --resource-group "$RESOURCE_GROUP" \
 --name "$VM_DB_SLAVE" \
---port 22,3306  \
+--port 22,3306,8081  \
 
 echo >&2 "<<<<<<<<<<<<<<<<< INVOKING COMMANDS >>>>>>>>>>>>>>>>>>>>>"
 
@@ -198,7 +200,7 @@ az vm run-command invoke \
 --resource-group "$RESOURCE_GROUP" \
 --name "$VM_FE" \
 --scripts @"$VM_FE_INIT_CMD_PATH" \
---parameters $VM_BE_PRIVATE_IP $VM_FE_PUBLIC_IP \
+--parameters $NGINX_PRIVATE_IP $VM_FE_PUBLIC_IP \
 --no-wait \
 
 az vm run-command invoke \
@@ -227,8 +229,16 @@ az vm run-command invoke \
 az vm run-command invoke \
 --command-id "RunShellScript" \
 --resource-group "$RESOURCE_GROUP" \
---name "$VM_BD" \
+--name "$VM_DB" \
 --scripts @"$VM_BE_INIT_CMD_PATH" \
+--parameters $VM_DB_PRIVATE_IP \
+--no-wait \
+
+az vm run-command invoke \
+--command-id "RunShellScript" \
+--resource-group "$RESOURCE_GROUP" \
+--name "$VM_DB_SLAVE" \
+--scripts @"$VM_NG_INIT_CMD_PATH" \
 --parameters $VM_DB_PRIVATE_IP \
 --no-wait \
 
