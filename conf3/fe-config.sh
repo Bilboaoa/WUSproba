@@ -62,13 +62,12 @@ server {
 
     # API proxy to backend server
     location /petclinic/api/ {
-        proxy_pass http://${API_URL}:$BE_PORT;
+        proxy_pass http://${API_URL}:\$BE_PORT;
         include proxy_params;
     }
 }
 
 EOL
 
-sudo rm /etc/nginx/sites-enabled/default
-
+sudo rm /etc/nginx/sites-enabled/defaul
 sudo systemctl restart nginx
