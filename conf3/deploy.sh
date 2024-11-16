@@ -224,6 +224,14 @@ az vm run-command invoke \
 --parameters $VM_DB_PRIVATE_IP 3306
 --no-wait \
 
+az vm run-command invoke \
+--command-id "RunShellScript" \
+--resource-group "$RESOURCE_GROUP" \
+--name "$VM_BD" \
+--scripts @"$VM_BE_INIT_CMD_PATH" \
+--parameters $VM_DB_PRIVATE_IP \
+--no-wait \
+
 echo >&2 "DEPLOYMENT COMPLETE"
 echo >&2 "WEBSITE URL: $VM_FE_PUBLIC_IP:8080"
 echo >&2 "SSH CONNECT: \`$ ssh $VM_USER@$VM_FE_PUBLIC_IP\` WITH PASSWORD: $VM_PASSWORD"
