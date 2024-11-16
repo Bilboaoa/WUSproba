@@ -3,7 +3,7 @@
 
 API_URL="$1"
 FE_URL="$2"
-BE_PORT="$3"
+BE_PORT=$3
 
 sudo apt-get update
 sudo apt-get upgrade -y
@@ -62,7 +62,7 @@ server {
 
     # API proxy to backend server
     location /petclinic/api/ {
-        proxy_pass http://${API_URL}:\$BE_PORT;
+        proxy_pass http://${API_URL}:$BE_PORT;
         include proxy_params;
     }
 }
