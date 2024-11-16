@@ -62,7 +62,7 @@ server {
 
     # API proxy to backend server
     location /petclinic/api/ {
-        proxy_pass http://${API_URL}:$BE_PORT;
+        proxy_pass http://${API_URL}:${BE_PORT};
         include proxy_params;
     }
 }
